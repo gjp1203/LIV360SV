@@ -23,14 +23,14 @@ def crop_image(image):
 
 #segmentations = "seamseg_outputs"
 #originals = "originals"
-segmentations = "/media/greg/Backup Plus/segmentations"
-originals = "/media/greg/Backup Plus/Rendered"
+segmentations = "/media/gpalmer/Backup Plus/segmentations"
+originals = "/media/gpalmer/Backup Plus/Rendered"
 files = glob.glob(segmentations+"/*.pth.tar")
 print(files)
 redo = []
-
+fileinfo = []
 for file in files: 
-    labels = torch.load(file)['sem_pred'].cpu()
+    labels = torch.load(file, map_location=torch.device('cpu'))['sem_pred'].cpu()
     image = np.zeros((labels.shape[0], labels.shape[1], 3), dtype=np.uint8)
     image[labels == 39] = [40, 40, 40]
     #print(len(np.unique(labels)))
@@ -83,4 +83,10 @@ for file in files:
                 print(wContours_bw.shape)
                 original[wContours_bw != 255] = 0.0
                 cv2.imwrite(file.replace(".pth.tar", '_'+str(i)+'masked.png').replace('segmentations', 'masked'), crop_image(original))
+                fileinfo.append({'size':sizes[i], 'path':file.replace(".pth.tar", '_'+str(i)+'masked.png').replace('segmentations', 'masked')})
+                print({'size':sizes[i], 'path':file.replace(".pth.tar", '_'+str(i)+'masked.png').replace('segmentations', 'masked')}) 
+df = pd.DataFrame(fileinfo)
+df.to_csv('fileinfo.csv')
 pd.DataFrame(redo).to_csv('redo.csv')
+
+
