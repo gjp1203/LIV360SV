@@ -20,17 +20,18 @@ def crop_image(image):
     return image[x0:x1, y0:y1]
 
 
-segmentations = "seamseg_outputs"
-originals = "originals"
+segmentations = "seamseg_output"
+originals = "Rendered"
 files = glob.glob("./"+segmentations+"/*.pth.tar")
-print(files)
 for file in files: 
     labels = torch.load(file)['sem_pred'].cpu()
     image = np.zeros((labels.shape[0], labels.shape[1], 3), dtype=np.uint8)
     image[labels == 39] = [40, 40, 40]
+    print(len(np.unique(labels)))
+    print(np.unique(labels))
     mask = np.zeros_like(image)
     mask[np.all(image == [40,40,40], axis=-1)] = 255
-
+    
     #find all connected components (white blobs in your image)
     nb_components, output, stats, centroids = cv2.connectedComponentsWithStats(mask[:,:,0].astype(np.uint8), connectivity=8)
 
@@ -48,9 +49,8 @@ for file in files:
         if sizes[i] >= min_size:
            img2 = np.zeros((output.shape))
            img2[output == i + 1] = 255
-
            # Mask
-           maskname = file.replace(".pth.tar", "_"+str(i)+"mask.png")
+           maskname = file.replace(".pth.tar", "_"+str(i)+"mask.png").replace(segmentations, "masks")
            cv2.imwrite(maskname, img2) # Expensive step that should be removed.
            im = cv2.imread(maskname) 
            imgray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
@@ -63,9 +63,9 @@ for file in files:
            cv2.imwrite(maskname, crop_image(wContours))
 
            # Masked Image
-           print(file.replace(".pth.tar", ".jpg").replace('seamseg_output', 'original'))
-           original = cv2.imread(file.replace(".pth.tar", ".jpg").replace('seamseg_output', 'original'))
+           print(file.replace(".pth.tar", ".jpg").replace(segmentations, originals))
+           original = cv2.imread(file.replace(".pth.tar", ".jpg").replace('seamseg_output', originals))
            original = cv2.resize(original, (2048,1024))
            original[(img2 != 255)] = 0.0
-           cv2.imwrite(file.replace(".pth.tar", '_'+str(i)+'masked.png'), crop_image(original))
+           cv2.imwrite(file.replace(".pth.tar", '_'+str(i)+'masked.png').replace(segmentations, "masked_ads"), crop_image(original))
 
