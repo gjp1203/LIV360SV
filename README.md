@@ -4,7 +4,23 @@ We present a workflow for extracting and classifying advertisements located with
 
 ## Data
 
+### The Liverpool 360 Street View Dataset
 
+While there exists an abundance of street-level imagery on platforms such as Google Street View, the recently imposed costs for using Google's API, as well as cases of Google updating terms and conditions to hinder researchers, highlights the need for alternative open sourced solutions. 
+Existing open and crowd sourced street-level images predominately lack the quality of the interactive panoramas found on services such as Google Street View. Images are frequently recorded using dashboard cameras, and as a result have a restricted field of vision. Motivated by these factors we record an open street-level dataset for Liverpool, using a GoPro Fusion 360 camera attached to a member of the team ([Mark Green](https://scholar.google.com/citations?user=_9XrEoIAAAAJ&hl=en&oi=ao)) who cycled along major roads. We follow Mapillary's [recommendations](https://help.mapillary.com/hc/en-us/articles/360026122412-GoPro-Fusion-360) for recording street-level images. The camera records front and back images at 0.5 second interval, which we later stitch together using GoPro Fusion Studio. To date our dataset consists of 26,645 street-level images each with GPS location recorded. We illustrate the current coverage of the LIV360SV dataset in below. 
+
+We focused on sampling three areas of Liverpool with varying contexts over three different days: (1) City Centre (Jan 14th 2020) - areas characterised by shops and services; (2) North Liverpool (Jan 15th 2020) - areas contain high levels of deprivation; (3) South Liverpool (Jan 18th 2020) - areas include a mixture of affluent populations and diverse ethnic groups To date we have identified 10,106 advertisements within these data, manually classified as food (1335), alcohol (217), gambling (149) and other (8405).
+
+https://www.mapillary.com/app/org/gdsl_uol?lat=53.39&lng=-2.9&z=11.72&tab=uploads 
+
+![LIV360SV Coverage](./img/liv360sv.png)
+
+### Advertisement Data
+
+While the Mapillary Vistas includes a billboards category, the dataset does not distinguish different types of advertisements. Further annotations would therefore be necessary to train panoptic scene segmentation networks to differentiate between advertisement types. However, manually annotating segmentation masks is a time consuming task. Instead, we propose to classify advertisements extracted from street level images using a model trained to classify advertisement images. Google Images is a useful resource for obtaining data for training and evaluating deep learning architectures \citep{traore2018deep,Guo_2018_ECCV}. We use this resource to build an advertisement dataset. First we compile a list of relevant keywords describing brands, business names and key terms. The keywords are subsequently used to scrape images using Python's \emph{Google Image Download} package~\footnote{\url{https://pypi.org/project/google_images_download/}}. Our final dataset consists of 159,897 food, 80,001 alcohol, 40,119 gambling and 34,156 other samples. Duplicate images are removed using FDUPES \citep{fdupes}. 
+%We extract 5000 images from each category and remove non-representative images, keeping 1500 samples for evaluation and test sets respectively. Finally, we apply random oversampling to supplement the training data of minority classes. 
+%\comMG{I thought useful to leave this in but we can take back out if need space}
+%\comGP{Commenting out the last bit, since I've left out the evaluation on the test images set aside from the scraped Google Images DS. Also, we now augment the training samples from the labelled extracted ads with random samples drawn from the above data.}
 
 ## Workflow Components
 
