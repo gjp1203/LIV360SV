@@ -21,10 +21,9 @@ def crop_image(image):
     return image[x0:x1, y0:y1]
 
 
-#segmentations = "seamseg_outputs"
-#originals = "originals"
-segmentations = "/media/gpalmer/Backup Plus/segmentations"
-originals = "/media/gpalmer/Backup Plus/Rendered"
+segmentations = "/segmentations" # Folder containing segmentation masks
+originals = "/Originals" # Folder containing street level images
+
 files = glob.glob(segmentations+"/*.pth.tar")
 print(files)
 redo = []
@@ -33,8 +32,6 @@ for file in files:
     labels = torch.load(file, map_location=torch.device('cpu'))['sem_pred'].cpu()
     image = np.zeros((labels.shape[0], labels.shape[1], 3), dtype=np.uint8)
     image[labels == 39] = [40, 40, 40]
-    #print(len(np.unique(labels)))
-    #print(np.array(labels).max())
     if np.array(labels).max() > 70:
         redo.append({'filename':file})
         print("Redo: " + file)
