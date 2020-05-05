@@ -1,6 +1,12 @@
 # LIV360SV 
 
-We present a workflow for extracting and classifying advertisements located within street level images. We use a seamless scene segmentation network to identify regions within street-level images where advertisements are located. To subsequently classify the extracted advertisements we train a MobileNet-V2 to differentiate advertisement types using data scraped from Google Images. We introduce the Liverpool 360 Street View (LIV360SV) dataset for evaluating our workflow. The dataset contains 26,645, 360 degree, street-level images collected via cycling with a GoPro Fusion 360 camera.
+We present a workflow for extracting and classifying advertisements located within street level images. We use a seamless scene segmentation network to identify regions within street-level images where advertisements are located. To subsequently classify the extracted advertisements we train a MobileNet-V2 to differentiate advertisement types using data scraped from Google Images. We introduce the Liverpool 360 Street View (LIV360SV) dataset for evaluating our workflow. The dataset contains 26,645, 360 degree, street-level images collected via cycling with a [GoPro Fusion 360 camera](https://gopro.com/en/at/news/the-basics-gopro-fusion).
+
+## Dependencies
+
+* [TensorFlow](https://www.tensorflow.org/install)
+* [Jupyter Notebook](https://jupyter.org/)
+* [Pandas](https://pandas.pydata.org/)
 
 ## Data
 
@@ -11,10 +17,9 @@ Existing open and crowd sourced street-level images predominately lack the quali
 
 We focused on sampling three areas of Liverpool with varying contexts over three different days: (1) City Centre (Jan 14th 2020) - areas characterised by shops and services; (2) North Liverpool (Jan 15th 2020) - areas contain high levels of deprivation; (3) South Liverpool (Jan 18th 2020) - areas include a mixture of affluent populations and diverse ethnic groups. We have uploaded our street level images to Mapillary, which can be viewed [here](https://www.mapillary.com/app/org/gdsl_uol?lat=53.39&lng=-2.9&z=11.72&tab=uploads). The images can be downloaded with [Mapillary Tools](https://github.com/mapillary/mapillary_tools) using the following command: 
 
-```
+``` 
 mapillary_tools download --advanced --by_property key \
---import_path dev/null \
---output_folder '.' \
+--import_path dev/null \ --output_folder './LIV360SV' \
 --organization_keys 'I8xRsrajuHHQRf6cdDgDi5' \
 --user_name '<Insert Mapillary Username>'
 ```
@@ -47,17 +52,28 @@ For extracting advertisements from street level images we use the seamless scene
 
 https://github.com/mapillary/seamseg
 
-### Extraction
+``` 
+python3 -m torch.distributed.launch --nproc_per_node=1 ./scripts/test_panoptic.py --meta ./data/metadata.bin ./data/config.ini ./data/seamseg_r50_vistas.tar ./LIV360SV ./Segmentations --raw    
+``` 
 
-Upon identifying the location of an advertisement, we obtain a one hot mask with a filled convex hull using [OpenCV's](https://opencv.org/) find and draw contours functionalities. The masks allow us to extract individual advertisements from the original input images. 
+### Extraction & Preprocessing
 
-### Preprocessing
+Upon identifying the location of an advertisement, we obtain a one hot mask with a filled convex hull using [OpenCV's](https://opencv.org/) find and draw contours functionalities. The masks allow us to extract individual advertisements from the original input images. With the remaining content having been masked out during the extraction step we subsequently crop the images. However, given that the final step of our workflow is to pass the extracted items to a classifier trained on advertisement images with a frontal view, we use a [Spatial Transformation Network (STN)](https://arxiv.org/pdf/1506.02025.pdf) to transform the extracted items, the majority of which were recorded from a non-frontal view.  
 
-With the remaining content having been masked out during the extraction step we subsequently crop the images. However, given that the final step of our workflow is to pass the extracted items to a classifier trained on advertisement images with a frontal view, we use a [Spatial Transformation Network (STN)](https://arxiv.org/pdf/1506.02025.pdf) to transform the extracted items, the majority of which were recorded from a non-frontal view.  
+To extract and pre-process the images run:
+
+```
+python3 preprocess.py
+```
 
 ### Classification
 
-We classify extracted advertisements using Keras' [MobileNet-V2](https://keras.io/applications/#mobilenetv2) implementation. The network is trained using manually labelled extracted samples augmented with the scraped images dataset. 
+We classify extracted advertisements using Keras' [MobileNet-V2](https://keras.io/applications/#mobilenetv2) implementation. The network is trained using manually labelled extracted samples augmented with the scraped images dataset. To train MobileNet-V2:
+
+
+```
+jupyter notebook MobileNetV2.ipynb
+```
 
 
 
