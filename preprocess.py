@@ -21,8 +21,8 @@ def crop_image(image):
     return image[x0:x1, y0:y1]
 
 
-segmentations = "/segmentations" # Folder containing segmentation masks
-originals = "/Originals" # Folder containing street level images
+segmentations = "./Segmentations" # Folder containing segmentation masks
+originals = "./LIV360SV" # Folder containing street level images
 
 files = glob.glob(segmentations+"/*.pth.tar")
 print(files)
