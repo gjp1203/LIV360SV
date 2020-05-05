@@ -12,23 +12,29 @@ Existing open and crowd sourced street-level images predominately lack the quali
 We focused on sampling three areas of Liverpool with varying contexts over three different days: (1) City Centre (Jan 14th 2020) - areas characterised by shops and services; (2) North Liverpool (Jan 15th 2020) - areas contain high levels of deprivation; (3) South Liverpool (Jan 18th 2020) - areas include a mixture of affluent populations and diverse ethnic groups. We have uploaded our street level images to Mapillary, which can be viewed [here](https://www.mapillary.com/app/org/gdsl_uol?lat=53.39&lng=-2.9&z=11.72&tab=uploads). The images can be downloaded with [Mapillary Tools](https://github.com/mapillary/mapillary_tools) using the following command: 
 
 ```
-mapillary_tools download --advanced --by_property key \ 
---organization_keys 'I8xRsrajuHHQRf6cdDgDi5' \
---import_path dev/null \ 
+mapillary_tools download --advanced --by_property key \
+--import_path dev/null \
 --output_folder '.' \
- --user_name '<Mapillary Username>'
+--organization_keys 'I8xRsrajuHHQRf6cdDgDi5' \
+--user_name '<Insert Mapillary Username>'
 ```
 
-To date we have identified 10,106 advertisements within these data, manually classified as food (1335), alcohol (217), gambling (149) and other (8405).
+To date we have identified 10,106 advertisements within these data, manually classified as food (1335), alcohol (217), gambling (149) and other (8405). Download the dataset as a .zip archive from:
+[LIV360SV_Labelled_Ads.zip](https://drive.google.com/open?id=1oVKQyhaK1iDkHZJSYR6d6_-T_39E-Ubw)
+Filesize: 1.1 GB
+md5sum: 5dd96f9ee9d3f474bd949ee901c6a147  
 
 ![LIV360SV Coverage](./img/liv360sv.png)
 
 ### Advertisement Data
 
-While the Mapillary Vistas includes a billboards category, the dataset does not distinguish different types of advertisements. Further annotations would therefore be necessary to train panoptic scene segmentation networks to differentiate between advertisement types. However, manually annotating segmentation masks is a time consuming task. Instead, we propose to classify advertisements extracted from street level images using a model trained to classify advertisement images. Google Images is a useful resource for obtaining data for training and evaluating deep learning architectures \citep{traore2018deep,Guo_2018_ECCV}. We use this resource to build an advertisement dataset. First we compile a list of relevant keywords describing brands, business names and key terms. The keywords are subsequently used to scrape images using Python's \emph{Google Image Download} package~\footnote{\url{https://pypi.org/project/google_images_download/}}. Our final dataset consists of 159,897 food, 80,001 alcohol, 40,119 gambling and 34,156 other samples. Duplicate images are removed using FDUPES \citep{fdupes}. 
-%We extract 5000 images from each category and remove non-representative images, keeping 1500 samples for evaluation and test sets respectively. Finally, we apply random oversampling to supplement the training data of minority classes. 
-%\comMG{I thought useful to leave this in but we can take back out if need space}
-%\comGP{Commenting out the last bit, since I've left out the evaluation on the test images set aside from the scraped Google Images DS. Also, we now augment the training samples from the labelled extracted ads with random samples drawn from the above data.}
+While the Mapillary Vistas includes a billboards category, the dataset does not distinguish different types of advertisements. Further annotations would therefore be necessary to train panoptic scene segmentation networks to differentiate between advertisement types. However, manually annotating segmentation masks is a time consuming task. Instead, we propose to classify advertisements extracted from street level images using a model trained to classify advertisement images. Google Images is a useful resource for obtaining data for training and evaluating deep learning architectures. We use this resource to build an advertisement dataset. First we compile a list of relevant keywords describing brands, business names and key terms. The keywords are subsequently used to scrape images using Python's [Google Image Download package](https://pypi.org/project/google_images_download/):
+
+```
+pip install google_images_download 
+```
+
+Duplicate images are removed using [FDUPES](https://github.com/adrianlopezroche/fdupes). 
 
 ## Workflow Components
 
