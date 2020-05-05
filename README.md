@@ -9,9 +9,17 @@ We present a workflow for extracting and classifying advertisements located with
 While there exists an abundance of street-level imagery on platforms such as Google Street View, the recently imposed costs for using Google's API, as well as cases of Google updating terms and conditions to hinder researchers, highlights the need for alternative open sourced solutions. 
 Existing open and crowd sourced street-level images predominately lack the quality of the interactive panoramas found on services such as Google Street View. Images are frequently recorded using dashboard cameras, and as a result have a restricted field of vision. Motivated by these factors we record an open street-level dataset for Liverpool, using a GoPro Fusion 360 camera attached to a member of the team ([Mark Green](https://scholar.google.com/citations?user=_9XrEoIAAAAJ&hl=en&oi=ao)) who cycled along major roads. We follow Mapillary's [recommendations](https://help.mapillary.com/hc/en-us/articles/360026122412-GoPro-Fusion-360) for recording street-level images. The camera records front and back images at 0.5 second interval, which we later stitch together using GoPro Fusion Studio. To date our dataset consists of 26,645 street-level images each with GPS location recorded. We illustrate the current coverage of the LIV360SV dataset in below. 
 
-We focused on sampling three areas of Liverpool with varying contexts over three different days: (1) City Centre (Jan 14th 2020) - areas characterised by shops and services; (2) North Liverpool (Jan 15th 2020) - areas contain high levels of deprivation; (3) South Liverpool (Jan 18th 2020) - areas include a mixture of affluent populations and diverse ethnic groups To date we have identified 10,106 advertisements within these data, manually classified as food (1335), alcohol (217), gambling (149) and other (8405).
+We focused on sampling three areas of Liverpool with varying contexts over three different days: (1) City Centre (Jan 14th 2020) - areas characterised by shops and services; (2) North Liverpool (Jan 15th 2020) - areas contain high levels of deprivation; (3) South Liverpool (Jan 18th 2020) - areas include a mixture of affluent populations and diverse ethnic groups. We have uploaded our street level images to Mapillary, which can be viewed [here](https://www.mapillary.com/app/org/gdsl_uol?lat=53.39&lng=-2.9&z=11.72&tab=uploads). The images can be downloaded with [Mapillary Tools](https://github.com/mapillary/mapillary_tools) using the following command: 
 
-https://www.mapillary.com/app/org/gdsl_uol?lat=53.39&lng=-2.9&z=11.72&tab=uploads 
+```
+mapillary_tools download --advanced --by_property key \ 
+--organization_keys 'I8xRsrajuHHQRf6cdDgDi5' \
+--import_path dev/null \ 
+--output_folder '.' \
+ --user_name '<Mapillary Username>'
+```
+
+To date we have identified 10,106 advertisements within these data, manually classified as food (1335), alcohol (217), gambling (149) and other (8405).
 
 ![LIV360SV Coverage](./img/liv360sv.png)
 
