@@ -26,7 +26,7 @@ mapillary_tools download --advanced --by_property key \
 
 To date we have identified 10,106 advertisements within these data, manually classified as food (1335), alcohol (217), gambling (149) and other (8405). Download the dataset as a .zip archive from:
 
-[LIV360SV_Labelled_Ads.zip](https://drive.google.com/open?id=1oVKQyhaK1iDkHZJSYR6d6_-T_39E-Ubw)<br>
+[LIV360SV_Labelled_Ads.zip](https://drive.google.com/file/d/1B_YnXTCJJR7HdqyzlcjwnStga1yIStip/view?usp=sharing)<br>
 Filesize: 1.1 GB <br>
 md5sum: d556dc5bcbda3aa4d67160ee44bf8cdb
 
