@@ -75,6 +75,25 @@ We classify extracted advertisements using Keras' [MobileNet-V2](https://keras.i
 jupyter notebook MobileNetV2.ipynb
 ```
 
+## Future Work: Using GANs to embed advertisements into SV images
+
+We note that advertisements extracted from street level imagery are
+often partially obscured by other real world entities (cars, trees,
+pedestrians). An approach to improve these issues may be to classify
+advertisements within street-level imagery augmented with Generative Adversarial
+Networks (GANs). We propose to embed selected
+advertisements within street-level imagery through GANs to create additional
+training data (albeit `fake data') for model training. To date we can show that
+advertisements can be successfully integrated into street-level images. We place
+the advertisement using a STN to transform the image to a target shape. Finally
+we train GANs to realistically embed the images. We provide examples of our
+placed advertisements in the following zip file. 
+We hypothesize that augmenting our collected street view data with these
+secondary GANs created data will enable the training of an effective model.
+
+[Placed_Ads_Using_GANs.zip](https://drive.google.com/file/d/1ETk7dgpuQN_ph3vP0X99EHFAiBjKeFoy/view?usp=sharing)<br>
+Filesize: 2.7 MB <br>
+md5sum: b2b2f0e04814fc363d24a86009ca40bb
 
 
  
