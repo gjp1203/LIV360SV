@@ -1,6 +1,9 @@
 # LIV360SV 
 
-We present a workflow for extracting and classifying advertisements located within street level images. We use a seamless scene segmentation network to identify regions within street-level images where advertisements are located. To subsequently classify the extracted advertisements we train a MobileNet-V2 to differentiate advertisement types using data scraped from Google Images. We introduce the Liverpool 360 Street View (LIV360SV) dataset for evaluating our workflow. The dataset contains 26,645, 360 degree, street-level images collected via cycling with a [GoPro Fusion 360 camera](https://gopro.com/en/at/news/the-basics-gopro-fusion).
+We present a workflow for extracting and classifying advertisements located
+within street level images. We use a seamless scene segmentation network to
+identify regions within street-level images where advertisements are located. To
+subsequently classify the extracted advertisements we train a Inception-V3 to differentiate advertisement types using data scraped from Google Images. We introduce the Liverpool 360 Street View (LIV360SV) dataset for evaluating our workflow. The dataset contains 26,645, 360 degree, street-level images collected via cycling with a [GoPro Fusion 360 camera](https://gopro.com/en/at/news/the-basics-gopro-fusion).
 
 ## Dependencies
 
@@ -41,16 +44,6 @@ md5sum: 5229319b6a3f8620bca2dfa7eefa465d
 
 ![LIV360SV Coverage](./img/liv360sv.png)
 
-### Advertisement Data
-
-While the Mapillary Vistas includes a billboards category, the dataset does not distinguish different types of advertisements. Further annotations would therefore be necessary to train panoptic scene segmentation networks to differentiate between advertisement types. However, manually annotating segmentation masks is a time consuming task. Instead, we propose to classify advertisements extracted from street level images using a model trained to classify advertisement images. Google Images is a useful resource for obtaining data for training and evaluating deep learning architectures. We use this resource to build an advertisement dataset. First we compile a list of relevant keywords describing brands, business names and key terms. The keywords are subsequently used to scrape images using Python's [Google Image Download package](https://pypi.org/project/google_images_download/):
-
-```
-pip install google_images_download 
-```
-
-Duplicate images are removed using [FDUPES](https://github.com/adrianlopezroche/fdupes). 
-
 ## Workflow Components
 
 ![Architecture](./img/architecture.png)
@@ -77,11 +70,14 @@ python3 preprocess.py
 
 ### Classification
 
-We classify extracted advertisements using Keras' [MobileNet-V2](https://keras.io/applications/#mobilenetv2) implementation. The network is trained using manually labelled extracted samples augmented with the scraped images dataset. To train MobileNet-V2:
+We classify extracted advertisements using Keras'
+[Inception-V2](https://keras.io/applications/) implementation. The network is
+trained using manually labelled extracted samples augmented with the scraped
+images dataset. To train Inception-V3:
 
 
 ```
-jupyter notebook MobileNetV2.ipynb
+jupyter notebook classifier.ipynb
 ```
 
 ## Future Work: Using GANs to embed advertisements into SV images
