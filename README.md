@@ -30,6 +30,15 @@ To date we have identified 10,106 advertisements within these data, manually cla
 Filesize: 1.0 GB <br>
 md5sum: d556dc5bcbda3aa4d67160ee44bf8cdb
 
+[manc.zip](https://drive.google.com/file/d/1q__975pcQk0DIVTK_JjGy3SxKnmTtZaj/view?usp=sharing)<br>
+Filesize: 4.1 GB <br>
+md5sum: 15716beaecd1968c2860d403558996e4
+
+
+[LIV360SV_Ads_with_less_duplicates.zip](https://drive.google.com/file/d/1IT_YZGEw7Znc9FwkHvt9jgPWV-gdPFNb/view?usp=sharing)
+Filesize: 803 MB <br>
+md5sum: 5229319b6a3f8620bca2dfa7eefa465d
+
 ![LIV360SV Coverage](./img/liv360sv.png)
 
 ### Advertisement Data
